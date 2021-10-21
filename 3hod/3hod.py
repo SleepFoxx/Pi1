@@ -66,8 +66,37 @@ prvyinterval = interval = ([prvyzačiatok, prvykoniec])
 druhyinterval = interval = ([druhyzačiatok, druhykoniec])
 print(prvyinterval)
 print(druhyinterval)
-"""
 
 riadky = int = input("Zadaj počet riadkov:")
-stĺpce = int = input("Zadaj počet stĺpcov:")
-for x in range(1, riadky + 1):
+stĺpce = int =input("Zadaj počet stĺpcov:")
+for i in range(0, stĺpce):
+    for j in range(0, riadky):
+        print("*",end="")
+    print()
+
+for j in range(0,4):
+    for i in range(0,j+1):
+        print("*",end="")
+    print()
+
+výška=4
+for j in range(0,4):
+    for i in range(0,výška ):
+        print("*", end="")
+    výška = výška - 1
+    print()
+
+výška = 4
+for j in range (0,výška):
+    for i in range (0,výška):
+        print("",end="")
+    print()
+"""
+a = 8
+for i in range(0, 5):
+    for j in range(0, a):
+        print(end=" ")
+  #  a = a - 1 / 2
+    for j in range(0, i+1):
+        print("* ", end="")
+    print()
