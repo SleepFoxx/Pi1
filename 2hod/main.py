@@ -1,5 +1,5 @@
-#import turtle
-#t = turtle.Turtle()
+import turtle
+t = turtle.Turtle()
 
 #Pretypovanie
 #vek = int(input("Zadaj svoj vek: " ))
