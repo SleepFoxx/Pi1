@@ -31,4 +31,7 @@ while (True):
     číslo2 = input("Zadaj číslo:")
     zoznam.append(číslo2)
     if číslo2 == "":
-        print(zoznam)
+        break
+
+
+
