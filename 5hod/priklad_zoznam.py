@@ -32,6 +32,7 @@ while (True):
     zoznam.append(číslo2)
     if číslo2 == "":
         break
-
+inde = (len(zoznam)) / 2
+index = inde - 1
 
 
