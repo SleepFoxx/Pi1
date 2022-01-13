@@ -14,8 +14,8 @@ pyglet.clock.schedule_interval(tik, 1/30)
 def spracuj_text(text):
     had.x = 150
 
-obrazok = pyglet.image.load('pong/snek.png')
-obrazok2 = pyglet.image.load('pong/snek2.jpg')
+obrazok = pyglet.image.load('snek.png')
+obrazok2 = pyglet.image.load('snek2.jpg')
 had = pyglet.sprite.Sprite(obrazok)
 
 

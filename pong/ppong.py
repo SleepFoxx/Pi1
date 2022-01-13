@@ -1,90 +1,108 @@
-import OpenGl as gl
-import pyglet 
-import math 
+import pyglet
 
-sirka = 1000
-vyska = 700
+#KONSTANTY OKNA
+from pyglet import gl
 
-velkost_lopty = 20
-rychlost = 200
+SIRKA = 1000
+VYSKA = 700
 
-dlzka_palky = 10
-sirka_palky = 100
-rychlost_palky = rychlost * 1.5 
+#LOPTA
+VELKOST_LOPTY= 20
+RYCHLOST = 200 #pixely za sekundu
+
+#PALKY
+TLSTKA_PALKY = 10
+VYSKA_PALKY = 100
+RYCHLOST_PALKY =  RYCHLOST * 1.5
 
 
+#PROSTREDNA CIARA
+CIARA_HRUBKA = 20
 
-ciara_hruba = 20
+#FONT
+VELKOST_FONTU = 42
+ODSADENIE_TEXTU = 30
 
-velkost_fontu = 42
-odsadenie_textu = 30 
-
-pozicia_palok = [vyska //2, vyska //2]
-pozicia_lopty = [0,0]
-rychlost_lopty = [0,0]
-stisknutie_klavesy = set()
+#STAVOVE PREMENEN
+pozicia_palok = [VYSKA //2, VYSKA//2]
+pozicia_lopty = [SIRKA//2,VYSKA//2]
+rychlost_lopty =[0,0]
+stisknute_klavesy = set()
 skore = [0,0]
 
+"""
+Nakresli obdelnik na dane souradnice
+Nazorny diagram::
+     y2 - +-----+
+          |/////|
+     y1 - +-----+
+          :     :
+         x1    x2
+"""
+def vykresli_obdlznik(x1,y1, x2,y2):
+    # Tady pouzijeme volani OpenGL, ktere je pro nas zatim asi nejjednodussi
+    # na pouziti
+    gl.glBegin(gl.GL_TRIANGLE_FAN)  # zacni kreslit spojene trojuhelniky
+    gl.glVertex2f(int(x1), int(y1))  # vrchol A
+    gl.glVertex2f(int(x1), int(y2))  # vrchol B
+    gl.glVertex2f(int(x2), int(y2))  # vrchol C, nakresli trojuhelnik ABC
+    gl.glVertex2f(int(x2), int(y1))  # vrchol D, nakresli trojuhelnik BCD
+    # dalsi souradnice E by nakreslila trojuhelnik CDE, atd.
+    gl.glEnd()  # ukonci kresleni trojuhelniku
 
-def vykresli_obdlznik(x1, y1, x2, y2):
-    gl.glBegin(gl.GL_TRIANGLES_FAN)
-    gl.glVertex2f(int(x1), int(y1))
-    gl.glVertex2f(int(x1), int(y2))
-    gl.glVertex2f(int(x2), int(y2))
-    gl.glVertex2f(int(x2), int(y1))
-    gl.glEnd()
-
-def nakresli_text(text, x, y, pozicia_x):
-    napis = pyglet.text.Label(text, font_size=velkost_fontu,x=x,y=y, pozicia_x=pozicia_x)
-
-
-
-
+def nakresli_text(text, x, y, pozice_x):
+    """Nakresli dany text na danou pozici
+    Argument ``pozice_x`` muze byt "left" nebo "right", udava na kterou stranu
+    bude text zarovnany
+    """
+    napis = pyglet.text.Label(text,font_size=VELKOST_FONTU,x=x,y=y,anchor_x=pozice_x)
+    napis.draw()
 
 def vykresli():
-    gl.glClear(gl.GL_COLOR_BUFFER_BIT)
-    gl.glColor3f(1,1,1)
+    """Vykresli stav hry"""
+    gl.glClear(gl.GL_COLOR_BUFFER_BIT)  # smaz obsah okna (vybarvi na cerno)
+    gl.glColor3f(1, 1, 1)  # nastav barvu kresleni na bilou
 
-
-vykresli_obdlznik(
-    pozicia_lopty[0] - velkost_lopty //2,
-    pozicia_lopty[1] - velkost_lopty //2,
-    pozicia_lopty[0] + velkost_lopty //2,
-    pozicia_lopty[1] + velkost_lopty //2
-)
-
-#text
-nakresli_text(str(skore[0]), x=obsadenie_textu)
-
-
-#palka
-for x, y in [(0, pozicia_palok[0]), (sirka, pozicia_palok[1])]:
+    #Vykresli loptu
     vykresli_obdlznik(
-        sirka // 2 - 1,
-        y,
-        sirka // 2 + 1,
-        y + ciara_hruba
+       pozicia_lopty[0] - VELKOST_LOPTY //2,
+       pozicia_lopty[1] - VELKOST_LOPTY //2,
+       pozicia_lopty[0] + VELKOST_LOPTY //2,
+       pozicia_lopty[1] + VELKOST_LOPTY //2
     )
 
+    #Vykreslit palky
+    # palky - udelame si seznam souradnic palek a pro kazdou dvojici souradnic
+    # v tom seznamu palku vykreslime
+    for x, y in [(0, pozicia_palok[0]), (SIRKA, pozicia_palok[1])]:
+        vykresli_obdlznik(
+            x - TLSTKA_PALKY,
+            y - VYSKA_PALKY // 2,
+            x + TLSTKA_PALKY,
+            y + VYSKA_PALKY // 2,
+        )
 
-#poliaca ciara
-for y in range(ciara_hruba // 2, vyska, ciara_hruba * 2):
-    vykresli_obdlznik(
-        sirka // 2 - 1,
-        y,
-        sirka // 2 + 1,
-        y + ciara_hruba 
-    )
+    #Vykreslenie: Poliacia ciara
+    # prerusovana pulici cara - slozena ze spousty malych obdelnicku
+    for y in range(CIARA_HRUBKA // 2, VYSKA, CIARA_HRUBKA * 2):
+        vykresli_obdlznik(
+            SIRKA // 2 - 1,
+            y,
+            SIRKA // 2 + 1,
+            y + CIARA_HRUBKA
+        )
 
-    #skore
-    nakresli_text(str(skore[0]),x=obsadenie_textu,y=vyska - obsadenie_textu - velkost_fontu, pozicia_x='left')
-    nakresli_text(str(skore[1]),x=sirka_obsadenie_textu,y=vyska - obsadenie_textu - velkost_fontu, pozicia_x='right')
+    #vykreslit score
+    nakresli_text(str(skore[0]),x=ODSADENIE_TEXTU,y = VYSKA- ODSADENIE_TEXTU - VELKOST_FONTU,pozice_x='left')
+    nakresli_text(str(skore[1]),x=SIRKA-ODSADENIE_TEXTU,y = VYSKA- ODSADENIE_TEXTU - VELKOST_FONTU,pozice_x='right')
 
-
-
-
-okno = pyglet.window.Window(width=sirka, height=vyska)
-okno,push_handlers(
+window = pyglet.window.Window(width=SIRKA,height=VYSKA)
+window.push_handlers(
     on_draw=vykresli,
 )
+
 pyglet.app.run()
+
+
+
+
