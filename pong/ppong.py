@@ -1,8 +1,6 @@
+import OpenGl as gl
 import pyglet 
 import math 
-from OpenGL.GL import *
-from OpenGL.GLUT import *
-from OpenGL.GLU import *
 
 sirka = 1000
 vyska = 700
@@ -36,6 +34,12 @@ def vykresli_obdlznik(x1, y1, x2, y2):
     gl.glVertex2f(int(x2), int(y1))
     gl.glEnd()
 
+def nakresli_text(text, x, y, pozicia_x):
+    napis = pyglet.text.Label(text, font_size=velkost_fontu,x=x,y=y, pozicia_x=pozicia_x)
+
+
+
+
 
 def vykresli():
     gl.glClear(gl.GL_COLOR_BUFFER_BIT)
@@ -49,13 +53,32 @@ vykresli_obdlznik(
     pozicia_lopty[1] + velkost_lopty //2
 )
 
+#text
+nakresli_text(str(skore[0]), x=obsadenie_textu)
 
 
+#palka
+for x, y in [(0, pozicia_palok[0]), (sirka, pozicia_palok[1])]:
+    vykresli_obdlznik(
+        sirka // 2 - 1,
+        y,
+        sirka // 2 + 1,
+        y + ciara_hruba
+    )
 
 
+#poliaca ciara
+for y in range(ciara_hruba // 2, vyska, ciara_hruba * 2):
+    vykresli_obdlznik(
+        sirka // 2 - 1,
+        y,
+        sirka // 2 + 1,
+        y + ciara_hruba 
+    )
 
-
-
+    #skore
+    nakresli_text(str(skore[0]),x=obsadenie_textu,y=vyska - obsadenie_textu - velkost_fontu, pozicia_x='left')
+    nakresli_text(str(skore[1]),x=sirka_obsadenie_textu,y=vyska - obsadenie_textu - velkost_fontu, pozicia_x='right')
 
 
 
