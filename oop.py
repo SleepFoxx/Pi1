@@ -214,8 +214,74 @@ class Bus(Vehicle):
 School_bus = Bus("School Volvo", 12, 50)
 
 print(isinstance(School_bus, Vehicle))
+
+class human:
+
+    def __init__(self, name):
+        self.name = name
+        self.fatigue = 0
+
+        
+    
+    def run(self, jednotka):
+        if self.fatigue > 20:
+            print( f"{self.name} je moc unaveny")
+            return
+        else:
+            self.fatigue = jednotka * 1
+            print(f"{self.name} bezi")
+    
+
+    def sleep(self, jednotka):
+        self.fatigue = jednotka * 10
+        print(f"{self.name} spi hodinu")
+    
+        
+        
+
+        
+clovek = human("Jakub" )
+clovek.run(25)
+clovek.run(11)
+
+
+import random
+
+
+class Generator:
+    def __init__(self):
+        self.pridavne_mena = ["modry", "velky", "automatizovany", "hudobny", "najlepsi"]
+        self.podstatne_mena = ["programator", "manazer", "hroch", "T-rex"]
+        self.sloveso = ["upratoval", "spal", "varil" ]
+        self.kde = ["v lese", "u babicky", "v praci"]
+
+    def vygeneruj(self):
+        a = random.choice(self.pridavne_mena)
+        b = random.choice(self.podstatne_mena)
+        c = random.choice(self.sloveso)
+        d = random.choice(self.kde)
+        print(f"{a} {b} {c} {d}")
+        
+
+generator = Generator()
+generator.vygeneruj()
 """
 
+class Auto:
+    def __init__(self, color, SPZ):
+        self.color = color
+        self.SPZ = SPZ
+    def zaparkuj(self):
+        print(f"{self.SPZ} sa zaparkoval")
+        return self.color, self.SPZ
+
+auto = Auto("biela", "SYMONGAE123", )
+auto1 = Auto("cervena", "ADAMGAE123", )
+garaz = []
+garaz.append(auto.zaparkuj())
+garaz.append(auto1.zaparkuj())
+
+print(f"V garazi je: ", garaz)
 
 
 
